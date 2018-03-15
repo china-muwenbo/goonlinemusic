@@ -1,0 +1,122 @@
+<!doctype html>
+
+<html class="no-js" lang="en"
+>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dylan 的音乐播放器</title>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
+</head>
+<body>
+<div id="example-wrapper">
+    <ul id="example-size-picker">
+        <li data-size="mobile">Mobile</li>
+        <li data-size="large">Large</li>
+        <li data-size="full">Full Screen</li>
+    </ul>
+
+    <div id="example-outer">
+        <div id="example" data-size="large">
+        </div>
+
+        <div class="g-container">
+            <form action="" class="basic-grey">
+                <div class="form-group">
+                    <div class="Companies" style="width: 960px; margin-left: auto; margin-right:auto">
+
+                        <div style="float:left">
+                            <input class="form-control" type="text" placeholder="请输入歌名" id="js-groupId">
+                        </div>
+                        <div style="float:left">
+                            <input type="button" value="搜索" id="searchButton">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+</div>
+<script src="js/jquery.min.js"></script>
+<script src="js/ttw-clarity-player.js"></script>
+<script src="js/yepnope.js"></script>
+<script type="text/javascript">
+
+    var datajson;
+    $.ajax({
+        type: "POST",
+        url: "/getMusic",
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            console.log(data);
+            datajson = data;
+        }
+    });
+
+
+    var clarity = $('#example').ttwClarityPlayer(datajson, {
+        jPlayer: {
+            supplied: 'mp3',
+            errorAlerts: true,
+            //自动播放
+            autoPlay: true,
+            //
+            warningAlerts: true,
+            consoleAlerts: true
+        }
+    });
+    $('#example-size-picker').on('click', 'li', function () {
+        $('#example').attr('data-size', $(this).data('size'));
+        clarity.manageLayout();
+    });
+
+
+    $("#searchButton").click(function () {
+        var data = $("#js-groupId").val();
+        var datajs;
+        $.ajax({
+            type: "POST",
+            url: "/serach_byArtistName",
+            data: {"serach_content": data, "need_page": "1"},
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                console.log(data);
+                datajs = data;
+            }
+        });
+        clarity.destroy();
+        clarity = $('#example').ttwClarityPlayer(datajs, {
+            jPlayer: {
+                supplied: 'mp3',
+                errorAlerts: true,
+                //自动播放
+                autoPlay: true,
+                //
+                warningAlerts: true,
+                consoleAlerts: true
+            }
+        });
+        // clarity.setPlaylist(datajs);
+        // clarity.redrawBackground()
+
+        // clarity.playlistInit(datajs)
+    });
+
+    function addPlaylist(datajs) {
+
+    }
+
+</script>
+
+<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+    <p>适用浏览器：360、FireFox、Chrome、Safari、Opera、傲游、搜狗、世界之窗. 不支持IE8及以下浏览器。</p>
+    <p>来源：<a href="http://sc.chinaz.com/" target="_blank">我的项目</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+<div id="base-layout">
+  <div class="player-layout-outer">
+    <div class="player-layout"></div>
+    <div class="player-controls-outer"></div>
+    <div class="player-background-outer"></div>
+  </div>
+</div>
+<div id="album-covers">
+  <div class="player-layout">
+    <div class="player-layout-inner">
+      <div class="album-covers-wrapper "> </div>
+    </div>
+  </div>
+</div>
+<div id="single-album-cover">
+  <div class="player-layout">
+    <div class="player-layout-inner">
+      <div class="album-covers-wrapper "> </div>
+    </div>
+  </div>
+</div>
+<div id="album-cover-and-list">
+  <div class="player-layout">
+    <div class="player-layout-inner">
+      <div class="album-covers-wrapper "> </div>
+      <div class="track-list-wrapper">
+        <div class="track-list nano">
+          <ul class="tracks nano-content">
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="list">
+  <div class="player-layout">
+    <div class="player-layout-inner">
+      <div class="track-list-wrapper">
+        <div class="track-list nano">
+          <ul class="tracks nano-content">
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="blank">
+  <div class="player-layout">
+    <div class="player-layout-inner"> </div>
+  </div>
+</div>
+<div id="player-interface">
+  <div class="player-controls">
+    <div class="jPlayer-container"></div>
+    <div class="player">
+      <div class="player-center">
+        <div class="player-center-inner">
+          <div class="player-track-info"></div>
+          <!--<div class="title"></div>--> 
+          <!--<div class="artist"></div>-->
+          
+          <div class="time-and-progress-wrapper">
+            <div class="player-time jp-current-time"></div>
+            <div class="progress-wrapper">
+              <div class="progress-bar jp-seek-bar">
+                <div class="elapsed-bar jp-play-bar"></div>
+              </div>
+            </div>
+            <div class="player-duration jp-duration"></div>
+          </div>
+        </div>
+      </div>
+      <div class="player-left">
+        <div class="previous jp-previous player-button"></div>
+        <div class="play jp-play player-button"></div>
+        <div class="pause jp-pause player-button"></div>
+        <div class="next jp-next player-button"></div>
+        <!-- These controls aren\t used by this plugin, but jPlayer seems to require that they exist --> 
+        <span class="unused-controls"> <span class="jp-video-play"></span> <span class="jp-stop"></span> <span class="jp-mute"></span> <span class="jp-unmute"></span> <span class="jp-volume-bar"></span> <span class="jp-volume-bar-value"></span> <span class="jp-volume-max"></span> <span class="jp-playback-rate-bar"></span> <span class="jp-playback-rate-bar-value"></span> <span class="jp-no-solution"></span> <span class="jp-full-screen"></span> <span class="jp-restore-screen"></span> <span class="jp-repeat"></span> <span class="jp-repeat-off"></span> <span class="jp-gui"></span> </span> </div>
+      <div class="player-right">
+        <div class="volume player-button" data-level="high"></div>
+        <div class="toggle-layout player-button"></div>
+        <div class="show-album-covers playlist-toggle-button player-button"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="list-item">
+  <li class="track">
+    <div class="track-number"></div>
+    <div class="track-details"> <span class="track-title"></span> <span class="track-artist"></span> </div>
+    <div class="duration"></div>
+  </li>
+</div>
+<div id="album-cover">
+  <div class="album-cover-wrapper">
+    <div class="album-cover">
+      <div class="image"> <span class="album-cover-highlight"></span> </div>
+    </div>
+    <div class="track-info">
+      <div class="track-title"></div>
+      <div class="track-artist"></div>
+    </div>
+  </div>
+</div>
+<div id="canvas">
+  <canvas class="player-background"></canvas>
+</div>
+</body>
+</html>
