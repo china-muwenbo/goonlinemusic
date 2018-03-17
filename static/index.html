@@ -25,13 +25,20 @@
         <div class="g-container">
             <form action="" class="basic-grey">
                 <div class="form-group">
-                    <div class="Companies" style="width: 960px; margin-left: auto; margin-right:auto">
-
+                    <div  style=" width: 960px; margin-left: auto; margin-right:auto">
                         <div style="float:left">
-                            <input class="form-control" type="text" placeholder="请输入歌名" id="js-groupId">
+                            <input class="form-control" type="text" placeholder="请输入歌手名" id="input_songer">
                         </div>
                         <div style="float:left">
-                            <input type="button" value="搜索" id="searchButton">
+                            <input type="button" value="搜索歌手" id="searchButton">
+                        </div>
+                    </div>
+                    <div  style=" width: 960px; margin-left: auto; margin-right:auto">
+                        <div style="float:left">
+                            <input class="form-control" type="text" placeholder="请输入歌名" id="input_title">
+                        </div>
+                        <div style="float:left">
+                            <input type="button" value="搜索歌名" id="searchTitleButton">
                         </div>
                     </div>
                 </div>
@@ -77,7 +84,8 @@
 
 
     $("#searchButton").click(function () {
-        var data = $("#js-groupId").val();
+        var data = $("#input_songer").val();
+        if (data.length==0)return;
         var datajs;
         $.ajax({
             type: "POST",
@@ -108,6 +116,39 @@
         // clarity.playlistInit(datajs)
     });
 
+
+    $("#searchTitleButton").click(function () {
+        var data = $("#input_title").val();
+        if (data.length==0)return;
+        var datajs;
+        $.ajax({
+            type: "POST",
+            url: "/serach_bySongName",
+            data: {"serach_content": data, "need_page": "1"},
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                console.log(data);
+                datajs = data;
+            }
+        });
+        clarity.destroy();
+        clarity = $('#example').ttwClarityPlayer(datajs, {
+            jPlayer: {
+                supplied: 'mp3',
+                errorAlerts: true,
+                //自动播放
+                autoPlay: true,
+                //
+                warningAlerts: true,
+                consoleAlerts: true
+            }
+        });
+        // clarity.setPlaylist(datajs);
+        // clarity.redrawBackground()
+
+        // clarity.playlistInit(datajs)
+    });
     function addPlaylist(datajs) {
 
     }
@@ -116,7 +157,7 @@
 
 <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
     <p>适用浏览器：360、FireFox、Chrome、Safari、Opera、傲游、搜狗、世界之窗. 不支持IE8及以下浏览器。</p>
-    <p>来源：<a href="http://sc.chinaz.com/" target="_blank">我的项目</a></p>
+    <p>来源：<a href="http://sc.chinaz.com/" target="_blank">在线音乐播放器之golang 版</a></p>
 </div>
 </body>
 </html>

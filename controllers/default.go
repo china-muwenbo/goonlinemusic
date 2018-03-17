@@ -14,10 +14,10 @@ type MainController struct {
 type GetMusicController struct {
 	beego.Controller
 }
-type searchMusicController struct {
+type SearchMusicController struct {
 	beego.Controller
 }
-type searchMusicByTitleController struct {
+type SearchMusicByTitleController struct {
 	beego.Controller
 }
 
@@ -38,29 +38,36 @@ func (c *GetMusicController) Post() {
 	c.Data["json"]=getMusic()
 	c.ServeJSON()
 }
-func (c *searchMusicController) Get() {
-	c.Data["json"]=getMusic()
+func (c *SearchMusicController) Get() {
+	serach_content := c.GetString("serach_content")
+	_ = c.GetString("need_page")
+	fmt.Println(""+serach_content)
+	c.Data["json"]=SearchMusicByName(serach_content,0)
 	c.ServeJSON()
 
 }
-func (c *searchMusicController) Post() {
-
-	c.Data["json"]=getMusic()
+//根据歌手名搜索
+func (c *SearchMusicController) Post() {
+	serach_content := c.GetString("serach_content")
+	_ = c.GetString("need_page")
+	c.Data["json"]=SearchMusicByName(serach_content,0)
 	c.ServeJSON()
 }
-
-func (c *searchMusicByTitleController) Get() {
-	c.Data["json"]=getMusic()
+//根据歌名搜索
+func (c *SearchMusicByTitleController) Get() {
+	serach_content := c.GetString("serach_content")
+	_ = c.GetString("need_page")
+	c.Data["json"]=SearchMusicByMusicName(serach_content,0)
 	c.ServeJSON()
 
 }
 
-func (c *searchMusicByTitleController) Post() {
-	c.Data["json"]=getMusic()
+func (c *SearchMusicByTitleController) Post() {
+	serach_content := c.GetString("serach_content")
+	_ = c.GetString("need_page")
+	c.Data["json"]=SearchMusicByMusicName(serach_content,0)
 	c.ServeJSON()
 }
-
-
 
 //root:muwenbo@tcp(123.207.215.205:3306)/go?charset=utf8
 
@@ -86,7 +93,7 @@ func SearchMusicByName(name string,page int ) []Musicinfo {
 		fmt.Println("引擎开启失败",err)
 	}
 	ss:=make([]Musicinfo,0)
-	engine.Where("musicinfo.artist=?",name).Limit(200,1).Find(&ss)
+	engine.SQL("select * from musicinfo where musicinfo.artist LIKE ?","%"+name+"%").Limit(100,2).Find(&ss)
 	fmt.Println(ss)
 	engine.Close()
 	return ss
@@ -103,15 +110,11 @@ func SearchMusicByMusicName(name string,page int ) []Musicinfo {
 		fmt.Println("引擎开启失败",err)
 	}
 	ss:=make([]Musicinfo,0)
-	engine.SQL("select * from musicinfo where musicinfo.title LIKE ?","%"+name+"%").Limit(100).Find(&ss)
-
+	engine.SQL("select * from musicinfo where musicinfo.title LIKE ?","%"+name+"%").Limit(100,2).Find(&ss)
 	fmt.Println(ss)
 	engine.Close()
 	return ss
 }
-
-
-
 
 //首页音乐
 func getMusic() []Musicinfo {
@@ -129,4 +132,3 @@ func getMusic() []Musicinfo {
 	engine.Close()
 	return ss
 }
-

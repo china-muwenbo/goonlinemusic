@@ -6,7 +6,6 @@ import (
 	"testing"
 	"runtime"
 	"path/filepath"
-	_ "test/routers"
 
 	"github.com/astaxie/beego"
 	. "github.com/smartystreets/goconvey/convey"
