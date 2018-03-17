@@ -71,8 +71,6 @@ func (c *SearchMusicByTitleController) Post() {
 
 //root:muwenbo@tcp(123.207.215.205:3306)/go?charset=utf8
 
-
-
 type Musicinfo struct {
 
 	Url        string `xorm:"not null index VARCHAR(200)" json:"mp3"`
@@ -93,7 +91,8 @@ func SearchMusicByName(name string,page int ) []Musicinfo {
 		fmt.Println("引擎开启失败",err)
 	}
 	ss:=make([]Musicinfo,0)
-	engine.SQL("select * from musicinfo where musicinfo.artist LIKE ?","%"+name+"%").Limit(100,2).Find(&ss)
+	//sql 对limit 不起作用
+	engine.SQL("select * from musicinfo where musicinfo.artist LIKE ? limit 0,200 ","%"+name+"%"  ).Limit(100,2).Find(&ss)
 	fmt.Println(ss)
 	engine.Close()
 	return ss
@@ -110,7 +109,7 @@ func SearchMusicByMusicName(name string,page int ) []Musicinfo {
 		fmt.Println("引擎开启失败",err)
 	}
 	ss:=make([]Musicinfo,0)
-	engine.SQL("select * from musicinfo where musicinfo.title LIKE ?","%"+name+"%").Limit(100,2).Find(&ss)
+	engine.SQL("select * from musicinfo where musicinfo.title LIKE ? limit 0,200","%"+name+"%").Limit(100,2).Find(&ss)
 	fmt.Println(ss)
 	engine.Close()
 	return ss
@@ -132,3 +131,4 @@ func getMusic() []Musicinfo {
 	engine.Close()
 	return ss
 }
+
