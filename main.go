@@ -9,7 +9,6 @@ import (
 func main() {
 	routers.Init()
 	beego.SetStaticPath("/static", "static")
-
 	beego.Run()
 }
 
