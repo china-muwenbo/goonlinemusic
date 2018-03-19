@@ -3,7 +3,7 @@ package routers
 import (
 
 	"github.com/astaxie/beego"
-	"goonlinemusic/controllers"
+	"../controllers"
 )
 
 func Init() {

@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
-	"goonlinemusic/models"
+	"../models"
 )
 
 type SearchMusicByTitleController struct {

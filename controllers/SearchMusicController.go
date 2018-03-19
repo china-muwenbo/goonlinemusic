@@ -3,7 +3,7 @@ package controllers
 import (
 	"fmt"
 	"github.com/astaxie/beego"
-	"goonlinemusic/models"
+	"../models"
 )
 //根据艺术家的名字搜索
 type SearchMusicController struct {
