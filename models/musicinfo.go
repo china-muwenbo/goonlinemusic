@@ -11,7 +11,7 @@ type Musicinfo struct {
 	Duration   string `xorm:"not null VARCHAR(200)" json:"duration"`
 	Title      string `xorm:"not null VARCHAR(200)" json:"title"`
 	Artist     string `xorm:"default '未知' VARCHAR(200)" json:"artist"`
-	Background string `xorm:"VARCHAR(200)" json:"Background"`
+	Background string `xorm:"VARCHAR(200)" json:"background"`
 	Cover      string `xorm:"VARCHAR(200)" json:"cover"`
 }
 
@@ -53,7 +53,8 @@ func SearchMusicByMusicName(name string,page int ) []Musicinfo {
 }
 
 //首页音乐
-func GetMusic() []Musicinfo {
+// 返回当前
+func GetMusic(cp int ) ([]Musicinfo,int) {
 	var err error
 	var engine *xorm.Engine
 	engine, err = xorm.NewEngine("mysql", GetSQLUrl())
@@ -63,9 +64,11 @@ func GetMusic() []Musicinfo {
 		fmt.Println("引擎开启失败",err)
 	}
 	ss:=make([]Musicinfo,0)
-	engine.SQL("select * from musicinfo limit 0,200 ").Find(&ss)
+	engine.Limit(200,200*cp).Find(&ss)
 	fmt.Println(ss)
 	engine.Close()
-	return ss
+	return ss,10
 }
+
+
 

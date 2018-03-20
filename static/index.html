@@ -9,8 +9,12 @@
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
+    <link type="text/css" rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.1.1/css/bootstrap.min.css"/>
+
 </head>
 <body>
+
+
 <div id="example-wrapper">
     <ul id="example-size-picker">
         <li data-size="mobile">Mobile</li>
@@ -45,12 +49,17 @@
             </form>
         </div>
 
+        <p id="p1"></p>
+        <ul class="pagination" id="pagination1"></ul>
+
+
     </div>
 </div>
 </div>
 <script src="js/jquery.min.js"></script>
 <script src="js/ttw-clarity-player.js"></script>
 <script src="js/yepnope.js"></script>
+<script  src="js/jqPaginator.js"></script>
 <script type="text/javascript">
 
     var datajson;
@@ -60,10 +69,49 @@
         dataType: 'json',
         async: false,
         success: function (data) {
-            console.log(data);
             datajson = data;
         }
     });
+
+
+        adddata()
+
+        function adddata() {
+            var  da;
+            $.ajax({
+                type: "GET",
+                url: "/getMusic",
+                data: {"cp":"3"},
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    da = data.music;
+                    console.log(da)
+                    clarity = $('#example').ttwClarityPlayer(da, {
+                        jPlayer: {
+                            supplied: 'mp3',
+                            errorAlerts: true,
+                            //自动播放
+                            autoPlay: true,
+                            //
+                            warningAlerts: true,
+                            consoleAlerts: true
+                        }
+                    });
+                    $.jqPaginator('#pagination1', {
+                        totalPages: data.total,
+                        visiblePages: 0,
+                        currentPage: data.cp,
+                        onPageChange: function (num, type) {
+                            $('#p1').text(type + '：' + num);
+                        }
+                    });
+                }
+            });
+
+        }
+
+
 
 
     var clarity = $('#example').ttwClarityPlayer(datajson, {
@@ -94,7 +142,7 @@
             dataType: 'json',
             async: false,
             success: function (data) {
-                console.log(data);
+
                 datajs = data;
             }
         });
@@ -128,7 +176,7 @@
             dataType: 'json',
             async: false,
             success: function (data) {
-                console.log(data);
+
                 datajs = data;
             }
         });
