@@ -1,7 +1,8 @@
 package main
 
 import (
-
+	"../models"
+	"fmt"
 )
 
 func main() {
@@ -22,7 +23,12 @@ func main() {
 	//	fmt.Println(errs.Error())
 	//}
 	//fmt.Println(string(jsons)) //byte[]转换成string 输出
-
-	SearchMusicByName("周")
-
+	var name = "周杰伦"
+	str := models.SearchMusicByName(name, 1)
+	models.SetMusicArtist(name, str)
+	v, err := models.GetMusicArtistFrom(name)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(v)
 }

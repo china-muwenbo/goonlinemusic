@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/go-xorm/xorm"
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/core"
 )
 
@@ -20,6 +21,9 @@ func SearchMusicByName(name string,page int ) []Musicinfo {
 	var err error
 	var engine *xorm.Engine
 	engine, err = xorm.NewEngine("mysql", GetSQLUrl())
+		if err !=nil {
+		fmt.Println(err)
+		}
 	engine.ShowSQL(true)
 	engine.Logger().SetLevel(core.LOG_DEBUG)
 	if err !=nil{
@@ -51,6 +55,8 @@ func SearchMusicByMusicName(name string,page int ) []Musicinfo {
 	engine.Close()
 	return ss
 }
+
+
 
 //首页音乐
 // 返回当前
