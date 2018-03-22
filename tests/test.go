@@ -23,12 +23,28 @@ func main() {
 	//	fmt.Println(errs.Error())
 	//}
 	//fmt.Println(string(jsons)) //byte[]转换成string 输出
-	var name = "周杰伦"
-	str := models.SearchMusicByName(name, 1)
-	models.SetMusicArtist(name, str)
-	v, err := models.GetMusicArtistFrom(name)
-	if err != nil {
-		fmt.Println(err)
+
+
+	//
+	//	models.AddCached("薛之谦")  向缓存策略表添加数据
+
+
+	var name = "王菲"
+	 needca :=models.HasCached(name)
+	 var str string
+	 var err error
+	if needca {
+		str,err=models.GetMusicArtistFromCache(name)
+		if err != nil {
+		}
 	}
-	fmt.Println(v)
+	//str,err= models.SearchMusicByNameS(name, 1)
+	music:= models.SearchMusicByName(name, 1)
+
+	if needca{
+		models.SetMusicArtist(name, music)
+	}
+
+	fmt.Println(str)
 }
+

@@ -18,6 +18,8 @@ func GetSQLUrl() string  {
 	return dsn
 }
 
+
+
 func TableName(name string) string {
 	return beego.AppConfig.String("db.prefix") + name
 }

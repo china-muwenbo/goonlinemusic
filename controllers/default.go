@@ -38,11 +38,11 @@ func (c *GetMusicController) Get() {
 
 	j,err:=json.Marshal(r)
 	fmt.Println(string(j))
-
 	if err !=nil{
 	}
-
-	c.Ctx.WriteString(string(j))
+	c.Data["json"]=music
+	c.ServeJSON()
+	//c.Ctx.WriteString(string(j))
 
 
 

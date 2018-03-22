@@ -11,18 +11,23 @@ func hasMusicNameKey(name string) bool{
 }
 
 
-func GetMusicArtistFrom(name string ) (string,error){
+func GetMusicArtistFromCache(name string ) (string,error){
 	c, err := 	redis.Dial("tcp", "123.207.215.205:6379")
 	if err != nil {
 		fmt.Println(err)
 		return "",err
 	}
 	err=c.Send("auth","muwenbo")
+	if err  != nil{
+		return "",err
+	}
 	re,err:=redis.String(c.Do("get",name))
-	fmt.Println(re)
+	if err !=nil{
+		return "",err
+	}
+
 	defer c.Close()
 	return re,err
-
 }
 
 
