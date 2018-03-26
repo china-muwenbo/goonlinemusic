@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
-    <link type="text/css" rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.1.1/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet"
+          href="http://cdn.staticfile.org/twitter-bootstrap/3.1.1/css/bootstrap.min.css"/>
 
 </head>
 <body>
@@ -29,7 +30,7 @@
         <div class="g-container">
             <form action="" class="basic-grey">
                 <div class="form-group">
-                    <div  style=" width: 960px; margin-left: auto; margin-right:auto">
+                    <div style=" width: 960px; margin-left: auto; margin-right:auto">
                         <div style="float:left">
                             <input class="form-control" type="text" placeholder="请输入歌手名" id="input_songer">
                         </div>
@@ -37,7 +38,7 @@
                             <input type="button" value="搜索歌手" id="searchButton">
                         </div>
                     </div>
-                    <div  style=" width: 960px; margin-left: auto; margin-right:auto">
+                    <div style=" width: 960px; margin-left: auto; margin-right:auto">
                         <div style="float:left">
                             <input class="form-control" type="text" placeholder="请输入歌名" id="input_title">
                         </div>
@@ -52,84 +53,56 @@
         <p id="p1"></p>
         <ul class="pagination" id="pagination1"></ul>
 
-
     </div>
 </div>
 </div>
 <script src="js/jquery.min.js"></script>
 <script src="js/ttw-clarity-player.js"></script>
 <script src="js/yepnope.js"></script>
-<script  src="js/jqPaginator.js"></script>
+<script src="js/jqPaginator.js"></script>
 <script type="text/javascript">
+    //加载默认音乐
+    $(function () {
+        var datajson;
+        $.ajax({
+            type: "GET",
+            url: "/getMusic",
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                datajson = data;
+            }
+        });
+        clarity = $('#example').ttwClarityPlayer(datajson, {
+            jPlayer: {
+                supplied: 'mp3',
+                errorAlerts: true,
+                //自动播放
+                autoPlay: true,
+                warningAlerts: true,
+                consoleAlerts: true
+            }
+        });
+    })
 
-    var datajson;
-    $.ajax({
-        type: "GET",
-        url: "/getMusic",
-        dataType: 'json',
-        async: false,
-        success: function (data) {
-            datajson = data;
-        }
+    $("#searchTitleButton").click(function () {
+       var data = $("#input_title").val();
+        if (data.length == 0) return;
+        var datajs;
+        $.ajax({
+            type: "POST",
+            url: "/serach_bySongName",
+            data: {"serach_content": data, "need_page": "1"},
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                console.log(data);
+                datajs = data;
+            }
+        });
+        remakeMusic(datajs)
+        // clarity.pause()
     });
-
-
-        adddata()
-
-        function adddata() {
-            var  da;
-            $.ajax({
-                type: "GET",
-                url: "/getMusic",
-                data: {"cp":"3"},
-                dataType: 'json',
-                async: false,
-                success: function (data) {
-                    da = data.music;
-                    console.log(da)
-                    clarity = $('#example').ttwClarityPlayer(da, {
-                        jPlayer: {
-                            supplied: 'mp3',
-                            errorAlerts: true,
-                            //自动播放
-                            autoPlay: true,
-                            //
-                            warningAlerts: true,
-                            consoleAlerts: true
-                        }
-                    });
-                    $.jqPaginator('#pagination1', {
-                        totalPages: data.total,
-                        visiblePages: 0,
-                        currentPage: data.cp,
-                        onPageChange: function (num, type) {
-                            $('#p1').text(type + '：' + num);
-                        }
-                    });
-                }
-            });
-
-        }
-
-
-
-
-    var clarity = $('#example').ttwClarityPlayer(datajson, {
-        jPlayer: {
-            supplied: 'mp3',
-            errorAlerts: true,
-            //自动播放
-            autoPlay: true,
-            //
-            warningAlerts: true,
-            consoleAlerts: true
-        }
-    });
-    $('#example-size-picker').on('click', 'li', function () {
-        $('#example').attr('data-size', $(this).data('size'));
-        clarity.manageLayout();
-    });
-
 
     $("#searchButton").click(function () {
         var data = $("#input_songer").val();
@@ -142,65 +115,24 @@
             dataType: 'json',
             async: false,
             success: function (data) {
-
+                console.log(data);
                 datajs = data;
             }
         });
-        clarity.destroy();
-        clarity = $('#example').ttwClarityPlayer(datajs, {
+        remakeMusic(datajs)
+    });
+    function  remakeMusic(datajs) {
+        $('#example').empty().ttwClarityPlayer(datajs, {
             jPlayer: {
                 supplied: 'mp3',
                 errorAlerts: true,
                 //自动播放
                 autoPlay: true,
-                //
                 warningAlerts: true,
                 consoleAlerts: true
             }
         });
-        // clarity.setPlaylist(datajs);
-        // clarity.redrawBackground()
-
-        // clarity.playlistInit(datajs)
-    });
-
-
-    $("#searchTitleButton").click(function () {
-        var data = $("#input_title").val();
-        if (data.length==0)return;
-        var datajs;
-        $.ajax({
-            type: "POST",
-            url: "/serach_bySongName",
-            data: {"serach_content": data, "need_page": "1"},
-            dataType: 'json',
-            async: false,
-            success: function (data) {
-
-                datajs = data;
-            }
-        });
-        clarity.destroy();
-        clarity = $('#example').ttwClarityPlayer(datajs, {
-            jPlayer: {
-                supplied: 'mp3',
-                errorAlerts: true,
-                //自动播放
-                autoPlay: true,
-                //
-                warningAlerts: true,
-                consoleAlerts: true
-            }
-        });
-        // clarity.setPlaylist(datajs);
-        // clarity.redrawBackground()
-
-        // clarity.playlistInit(datajs)
-    });
-    function addPlaylist(datajs) {
-
     }
-
 </script>
 
 <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">

@@ -750,7 +750,6 @@ var ClarityTemplates = ClarityTemplates || false;
             function applyBackground() {
                 var applyingBackground = setImageBackground();
 
-
                 return applyingBackground;
             }
 
@@ -2235,7 +2234,7 @@ var ClarityTemplates = ClarityTemplates || false;
     };
 
     $.fn.ttwClarityPlayer = function (myPlaylist, userOptions) {
-
+        
         return new ClarityPlayer(this, myPlaylist, userOptions);
     };
 
